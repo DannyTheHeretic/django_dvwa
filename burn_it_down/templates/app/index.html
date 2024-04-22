@@ -1,0 +1,65 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<html>
+<head>
+    <title>Chat Box</title>
+    <!-- Load the static JavaScript file for chat functionality -->
+    {% load static %}
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'app/content/chatbox.css' %}"> {% endcomment %}
+    {% comment %} <script src="{% static 'app/scripts/chatbox.js' %}" defer></script> {% endcomment %}
+</head>
+<body>
+    <script>
+        async function pinger(){
+            var ip = document.getElementById('ip_input');
+            console.log(ip.value)
+            let response = await fetch('/api/ping/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: await ip.value
+            });
+            if (response.ok) {
+                const data = await response.json();
+                let data_input = data.body;
+                console.log(data_input)
+            } else {
+                console.error('Failed to get response from server');
+            }
+        }
+
+        async function sqler(){
+            var sql = document.getElementById('sql_input');
+            console.log(sql.value)
+            let response = await fetch('/api/sql/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: await sql.value
+            });
+            if (response.ok) {
+                const data = await response.json();
+                let data_input = data.body;
+                console.log(data_input)
+            } else {
+                console.error('Failed to get response from server');
+            }
+        }
+    </script>
+
+
+    <p>Command Injection</p>
+    <input type=text id="ip_input">
+    <button onclick='pinger()'>submit</button>
+    <p>SQL Injection</p>
+    <input type=text id="sql_input">
+    <button onclick='sqler()'>submit</button>
+
+</body>
+</html>
+
+{% endblock %}
