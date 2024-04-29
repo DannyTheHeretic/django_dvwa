@@ -23,18 +23,20 @@ def index(request: HttpRequest) -> HttpResponse:
     )
 
 
-@csrf_exempt
-def ping(request):
-    url = request.body
-    t = os.popen(f"ping {str(url, 'utf-8')}").read()
-    return JsonResponse({"body": t})
+# @csrf_exempt
+# def ping(request):
+#     url = request.body
+#     t = os.popen(f"ping {str(url, 'utf-8')}").read()
+#     return JsonResponse({"body": t})
 
 
 @csrf_exempt
 def sql(request):
-    data = request.body
+    id = str(request.body, 'utf-8')
     try:
-        q = f"SELECT id, username FROM auth_user WHERE id = '{str(data, 'utf-8')}'"
+        if 'DROP' in id.upper() or 'UPDATE' in id.upper() or 'INSERT' in id.upper():
+            return JsonResponse({"body": [['you dirty','dog']]})
+        q = f"SELECT id, username FROM auth_user WHERE id = '{id}' LIMIT 10"
         print(q)
         x = User.objects.raw(q)
         for i in x:
@@ -43,4 +45,4 @@ def sql(request):
 
     except Exception as e:
         print(f"Error: {e}")
-        return JsonResponse({"error": "An error occurred"})
+        return JsonResponse({"error": [["An error","occurred"]]})

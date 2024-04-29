@@ -6,33 +6,18 @@
 <head>
     <title>Chat Box</title>
     <!-- Load the static JavaScript file for chat functionality -->
-    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>{% load static %}
     {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'app/content/chatbox.css' %}"> {% endcomment %}
     {% comment %} <script src="{% static 'app/scripts/chatbox.js' %}" defer></script> {% endcomment %}
 </head>
-<body>
+<body style="background:black;">
     <script>
-        async function pinger(){
-            var ip = document.getElementById('ip_input');
-            console.log(ip.value)
-            let response = await fetch('/api/ping/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: await ip.value
-            });
-            if (response.ok) {
-                const data = await response.json();
-                let data_input = data.body;
-                console.log(data_input)
-            } else {
-                console.error('Failed to get response from server');
-            }
-        }
-
         async function sqler(){
             var sql = document.getElementById('sql_input');
+            var disp = document.getElementById('sql_out')
             console.log(sql.value)
             let response = await fetch('/api/sql/', {
                 method: 'POST',
@@ -42,24 +27,56 @@
                 body: await sql.value
             });
             if (response.ok) {
+                disp.innerHTML = ''
                 const data = await response.json();
                 let data_input = data.body;
-                console.log(data_input)
+                for(i in data_input){
+                    disp.innerHTML += `
+                    <p>id: ${data_input[i][0]}</p>
+                    <p>name: ${data_input[i][1]}</p>
+                    `
+                }
             } else {
                 console.error('Failed to get response from server');
             }
         }
+
+        $(function() {
+            $("#dialog").dialog({
+                autoOpen : false,height:'auto', width:'750', show : "blind", hide : "blind", draggable: true,
+            });
+            $("#contactUs").click(function() {
+                $("#dialog").dialog("open");
+                return false;
+            });
+        });
+    
     </script>
 
 
-    <p>Command Injection</p>
-    <input type=text id="ip_input">
-    <button onclick='pinger()'>submit</button>
     <p>SQL Injection</p>
-    <input type=text id="sql_input">
+    <input style="background:#bbbbbb;" type=text id="sql_input">
     <button onclick='sqler()'>submit</button>
-
+    <div id="sql_out"></div>
+    <div class="someElem"></div>
+    <button id="contactUs">?</button>                   
+    <div id="dialog" title="Help">
+        <pre><code class="language-python">
+_id = str(request.body, 'utf-8')
+try:
+    q = f"SELECT id, username FROM auth_user WHERE id = '{_id}' LIMIT 10"
+    x = User.objects.raw(q)
+    return JsonResponse({"body": list(x.query)})
+except Exception as e:
+    print(f"Error: {e}")
+    return JsonResponse({"error": [["An error","occurred"]]})
+    </code></pre>
+    </div>
+    
+    
+    <script>hljs.highlightAll();</script>
 </body>
+
 </html>
 
 {% endblock %}
