@@ -89,11 +89,7 @@ DATABASES = {
 }
 
 PASSWORD_HASHERS = [
-<<<<<<< HEAD
-    'django.contrib.auth.hashers.MD5PasswordHasher',
-=======
     'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
->>>>>>> 918d1f7 (data)
 ]
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
