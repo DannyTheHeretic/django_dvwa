@@ -75,7 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dvwa.wsgi.application'
 
-AUTH_USER_MODEL = 'burn_it_down.User'
+AUTH_USER_MODEL = 'auth.User'
 
 
 # Database

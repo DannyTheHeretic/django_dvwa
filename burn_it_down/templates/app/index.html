@@ -57,21 +57,26 @@
     <p>SQL Injection</p>
     <input style="background:#bbbbbb;" type=text id="sql_input">
     <button onclick='sqler()'>submit</button>
-    <div id="sql_out"></div>
     <div class="someElem"></div>
     <button id="contactUs">?</button>                   
     <div id="dialog" title="Help">
         <pre><code class="language-python">
 _id = str(request.body, 'utf-8')
 try:
-    q = f"SELECT id, username FROM auth_user WHERE id = '{_id}' LIMIT 10"
+    q = f"SELECT id, username FROM auth_user WHERE id = {_id} LIMIT 10"
     x = User.objects.raw(q)
     return JsonResponse({"body": list(x.query)})
 except Exception as e:
     print(f"Error: {e}")
     return JsonResponse({"error": [["An error","occurred"]]})
     </code></pre>
+    <p>hint: consider how strings are parsed like that?</p>
+    <p>extra hint: <a href='https://www.w3schools.com/sql/sql_injection.asp#:~:text=SQL%20Injection%20Based%20on%C2%A0""%3D""%20is%20Always%20True'>here</a></p>
+    <p>bonus points for getting the custom error message by doing something your not supposed too :)</p>
+    <p>after you get the hashes (md5 unsalted - really bad idea)</p>
+    <p>put them in <a href="https://www.dcode.fr/md5-hash">here</a>, maybe sign in</p>
     </div>
+    <div id="sql_out"></div>
     
     
     <script>hljs.highlightAll();</script>
