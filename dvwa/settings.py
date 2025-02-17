@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-s_@cf5rufl&ypgrggfqpb4w^kuba7adk_xekq-^vzs^^yyb(*2
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CRSF_TRUSTED_ORIGINS = ['https://guppy-ruling-gazelle.ngrok-free.app','http://127.0.0.1']
 
 # Application definition
 
@@ -75,7 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dvwa.wsgi.application'
 
-AUTH_USER_MODEL = 'burn_it_down.User'
+AUTH_USER_MODEL = 'auth.User'
 
 
 # Database
@@ -89,7 +89,7 @@ DATABASES = {
 }
 
 PASSWORD_HASHERS = [
-    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.UnsaltedMD5PasswordHasher',
 ]
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

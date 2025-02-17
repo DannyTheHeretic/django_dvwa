@@ -19,5 +19,4 @@ def main():
 
 
 if __name__ == "__main__":
-    os.popen("ngrok http --domain=guppy-ruling-gazelle.ngrok-free.app 8000")
     main()
